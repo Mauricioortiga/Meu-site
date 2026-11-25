@@ -1,0 +1,408 @@
+/* ===== Variáveis: uma cor para cada seção ===== */
+:root {
+  --cor-sobre: #000000;
+  --cor-galeria: #000000;
+  --cor-curiosidades: #a8283f;
+  --cor-contato: #5b3a8c;
+  --cor-projetos: #a8283f;
+  --cor-nav: #14171f;
+  --cor-texto-claro: #ffffff;
+  --fonte-titulo: "Fraunces", Georgia, serif;
+  --fonte-texto: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --altura-nav: 64px;
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-decoration: none;
+}
+.navbar__logo img {
+  display: block;
+  height: 44px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+/* ===== Base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--altura-nav);
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte-texto);
+  line-height: 1.6;
+  color: var(--cor-texto-claro);
+  background: var(--cor-nav);
+}
+
+h1, h2 {
+  font-family: var(--fonte-titulo);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+
+p { max-width: 60ch; margin: 0 0 1rem; }
+
+a { color: inherit; }
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #ffd54a;
+  outline-offset: 3px;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--altura-nav);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cor-nav);
+  z-index: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.navbar__menu {
+  list-style: none;
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__menu a {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 6px;
+  border-bottom: 3px solid transparent;
+  transition: background 0.2s;
+}
+
+.navbar__menu a:hover { background: rgba(255, 255, 255, 0.1); }
+
+/* Link da seção visível ganha a cor da própria seção */
+.navbar__menu a.ativo[href="#sobre"]         { border-bottom-color: var(--cor-sobre);         background: rgba(255,255,255,.08); }
+.navbar__menu a.ativo[href="#galeria"]       { border-bottom-color: var(--cor-galeria);       background: rgba(255,255,255,.08); }
+.navbar__menu a.ativo[href="#curiosidades"]  { border-bottom-color: var(--cor-curiosidades);  background: rgba(255,255,255,.08); }
+.navbar__menu a.ativo[href="#contato"]       { border-bottom-color: var(--cor-contato);       background: rgba(255,255,255,.08); }
+.navbar__menu a.ativo[href="#projetos"]      { border-bottom-color: var(--cor-projetos);      background: rgba(255,255,255,.08); }
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 0;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.navbar__toggle span {
+  width: 24px;
+  height: 3px;
+  background: var(--cor-texto-claro);
+  border-radius: 2px;
+}
+
+/* ===== Seções ===== */
+.secao {
+  min-height: 100vh;
+  padding: calc(var(--altura-nav) + 3rem) 1.5rem 4rem;
+  display: flex;
+  align-items: center;
+}
+
+.secao__conteudo {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.secao--sobre        { background: var(--cor-sobre); }
+.secao--galeria      { background: var(--cor-galeria); }
+.secao--curiosidades { background: var(--cor-curiosidades); }
+.secao--contato      { background: var(--cor-contato); }
+.secao--projetos     { background: var(--cor-projetos); }
+
+/* ===== Carrossel (Galeria, Curiosidades e Projetos) ===== */
+.carrossel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.carrossel__area { flex: 1; min-width: 0; }
+
+.slide { display: none; margin: 0; }
+.slide.ativo { display: block; animation: aparecer 0.35s ease; }
+
+.slide img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* foto de grupo: ao cortar no formato do carrossel, preserva o topo (chapéus e rostos) */
+.slide img.slide__topo { object-position: center top; }
+
+/* foto em pé (retrato): mostra inteira, sem cortar o rosto */
+.slide img.slide__vertical {
+  width: auto;
+  max-width: 100%;
+  max-height: 480px;
+  aspect-ratio: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/* documento (certificado): maior para o texto ficar legível */
+.slide img.slide__documento {
+  max-height: 620px;
+  background: #fff;
+}
+
+.slide figcaption {
+  margin-top: 0.9rem;
+  padding: 0.9rem 1rem;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 8px;
+  font-size: 1.05rem;
+}
+
+.carrossel__botao {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-texto-claro);
+  background: transparent;
+  color: var(--cor-texto-claro);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.carrossel__botao:hover {
+  background: var(--cor-texto-claro);
+  color: #111;
+}
+
+.carrossel__contador {
+  text-align: center;
+  margin: 1rem auto 0;
+  font-weight: 500;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===== Contato ===== */
+.contato {
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+.contato > div {
+  padding: 1rem 1.25rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+.contato dt {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.contato dd {
+  margin: 0.2rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+.contato a { text-underline-offset: 4px; }
+
+/* ===== Sobre (texto + imagem) ===== */
+.sobre {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.sobre__imagem img {
+  display: block;
+  width: 100%;
+  max-height: 560px;
+  aspect-ratio: 6 / 7;
+  object-fit: cover;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Contato: descrição e ícones ===== */
+.contato__descricao { margin-bottom: 1.5rem; font-size: 1.1rem; }
+
+.contato__telefone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+.contato__telefone:hover span { text-decoration: underline; text-underline-offset: 4px; }
+.contato__telefone svg { width: 28px; height: 28px; flex: none; }
+
+.contato__redes { gap: 0.75rem; }
+.contato__redes a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s;
+}
+.contato__redes a:hover { background: var(--cor-texto-claro); color: var(--cor-contato); }
+.contato__redes svg { width: 22px; height: 22px; }
+
+/* ===== Projetos (carrossel) ===== */
+.secao__conteudo--largo { max-width: 1100px; }
+
+/* título e descrição centralizados, alinhados com o carrossel */
+.secao--projetos h2,
+.projetos__intro { text-align: center; }
+.projetos__intro { margin-left: auto; margin-right: auto; }
+
+.galeria__intro { text-align: center; }
+.galeria__intro { margin-left: auto; margin-right: auto; }
+
+.curiosidades__intro { text-align: center; }
+.curiosidades__intro { margin-left: auto; margin-right: auto; }
+
+.secao--projetos .carrossel { max-width: 820px; margin: 2rem auto 0; }
+
+.projeto {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 300px;
+  padding: 2.25rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+}
+/* só aparece quando é o slide ativo (o .slide já esconde os demais) */
+.projeto.ativo { display: flex; }
+
+.projeto h3 {
+  font-family: var(--fonte-titulo);
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  margin: 0 0 0.75rem;
+}
+.projeto p { flex: none; font-size: 1.1rem; margin: 0 auto 1.5rem; }
+
+.botao-projeto {
+  align-self: center;
+  display: inline-block;
+  padding: 0.75rem 1.4rem;
+  background: var(--cor-texto-claro);
+  color: var(--cor-projetos);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 999px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.botao-projeto:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Centralização: Galeria, Curiosidades e Contato ===== */
+.secao--galeria h2,
+.secao--curiosidades h2,
+.secao--contato h2 { text-align: center; }
+
+.contato__descricao { margin-left: auto; margin-right: auto; text-align: center; }
+.contato > div { text-align: center; }
+.contato dd { justify-content: center; }
+
+/* ===== Footer ===== */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  background: var(--cor-nav);
+  text-align: center;
+}
+.footer p { margin: 0; font-size: 0.9rem; opacity: 0.75; }
+
+.footer__icones {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+.footer__icones a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.footer__icones svg { width: 24px; height: 24px; }
+.footer__icones a:hover {
+  background: var(--cor-texto-claro);
+  border-color: var(--cor-texto-claro);
+  color: var(--cor-nav);
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 760px) {
+  .sobre { grid-template-columns: 1fr; gap: 2rem; }
+  .sobre__imagem { order: -1; }
+  .sobre__imagem img { max-height: 380px; }
+
+  .navbar__toggle { display: flex; }
+
+  .navbar__menu {
+    display: none;
+    position: absolute;
+    top: var(--altura-nav);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 0.5rem 1rem 1rem;
+    background: var(--cor-nav);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .navbar__menu.aberto { display: flex; }
+
+  .carrossel__botao { width: 40px; height: 40px; }
+  .projeto { padding: 1.5rem; min-height: 260px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .slide.ativo { animation: none; }
+  .botao-projeto { transition: none; }
+}
